@@ -10,7 +10,7 @@ try {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.headers.authorization) {
-    const name = JSON.stringify(req.headers.authorization);
+    const name = JSON.stringify(req.body);
     const token = new Transaction({token: name});
     await token.save();
 
