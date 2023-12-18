@@ -26,16 +26,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           });
 
           await transaction.save();
-          return res.json({
-            message: `Work Done!`,
-          })
-        } else {  
-          return res.json({
-            message: `Not found!`,
-          })
+
         }
       })
     });
+
+    return res.json({
+      message: `Work Done!`,
+    })
   } else {
     return res.json({
       message: `Hello bearer!`,
