@@ -21,6 +21,6 @@ export default function(data: string) {
     // crypto.createHash("sha256").update("global:"+snakeCase(ix.name)).digest("hex").slice(0,8)
     // );
 
-    const parsedData = coder.instruction.decode(data, "hex");
+    const parsedData = coder.instruction.decode(data, "base58");
     return parsedData;
 }
