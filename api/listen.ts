@@ -12,7 +12,7 @@ try {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.headers.authorization && req.headers.authorization === process.env.HELIUS_HEADER) {
     const txObject = req.body;
-
+    console.log(txObject)
     txObject.meta.innerInstructions.forEach(ix => {
       ix.instructions.forEach(async(inIx) => {
         if (txObject.transaction.message.accountKeys[inIx.programIdIndex] === "mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc") {
