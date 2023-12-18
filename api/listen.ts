@@ -18,6 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message.instructions.forEach(async(ix) => {
         if (message.accountKeys[ix.programIdIndex] === "mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc") {
           const parsedData = parseData(ix.data);
+          console.log(parsedData)
           const transaction = new Transaction({
             params: JSON.stringify(parsedData?.data),
             sig: JSON.stringify(tx.transaction.signatures),
