@@ -11,7 +11,7 @@ try {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.headers.authorization && req.headers.authorization === process.env.HELIUS_HEADER) {
-    const txObject = JSON.parse(req.body);
+    const txObject = req.body;
 
     txObject.meta.innerInstructions.forEach(ix => {
       ix.instructions.forEach(async(inIx) => {
