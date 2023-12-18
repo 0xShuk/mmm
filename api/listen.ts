@@ -24,7 +24,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             type: parsedData?.name
           });
 
-          await transaction.save();
+          try {
+            await transaction.save();
+          } catch(e) {
+            res.status(403).send(e)
+          }
         }
       })
     });
