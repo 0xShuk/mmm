@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import mongoose from "mongoose";
 import Transaction from "../models/tx";
+import parseData from "../utils/anchor";
 
 try {
   mongoose.connect(process.env.MONGOOSE_URL as string);
@@ -9,13 +10,27 @@ try {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.headers.authorization) {
-    const name = JSON.stringify(req.body);
-    const token = new Transaction({token: name});
-    await token.save();
+  if (req.headers.authorization && req.headers.authorization === process.env.HELIUS_HEADER) {
+    const txObject = JSON.parse(req.body);
+
+    txObject.meta.innerInstructions.forEach(ix => {
+      ix.instructions.forEach(async(inIx) => {
+        if (txObject.transaction.message.accountKeys[inIx.programIdIndex] === "mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc") {
+          const parsedData = parseData(inIx.data);
+          const transaction = new Transaction({
+            params: JSON.stringify(parsedData?.data),
+            sig: JSON.stringify(txObject.transaction.signatures),
+            accounts: inIx.accounts.map(num => txObject.transaction.message.accountKeys[num]),
+            type: parsedData?.name
+          });
+
+          await transaction.save();
+        }
+      })
+    });
 
     return res.json({
-      message: `Hello tokener!`,
+      message: `Work Done!`,
     })
   }
   return res.json({
